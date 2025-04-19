@@ -2,31 +2,23 @@ syntax = "proto3";
 
 package auth;
 
-option go_package = "ember.auth.v1,authv1";
+option go_package = "github.com/yourname/project/auth/v1;authv1";
 
 service Auth {
-  // SendOTP send email on auth service and return string response
   rpc SendOTP (SendOTPRequest) returns (SendOTPResponse);
-
-  // VerifyOTP send otp-code and returns email response
   rpc VerifyOTP (VerifyOTPRequest) returns (VerifyOTPResponse);
-
-  // SignUp send username, email, password and returns and access and refresh token
   rpc SignUp (SignUpRequest) returns (SignUpResponse);
-
-
   rpc SignIn (SignInRequest) returns (SignInResponse);
-
-
   rpc SignOut (SignOutRequest) returns (SignOutResponse);
+  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
 }
 
 message SendOTPRequest {
-  string email = 1; // Email for the send otp on user mail
+  string email = 1;
 }
 
 message SendOTPResponse {
-  bool response = 1; // Boolean response
+  bool success = 1;
 }
 
 message VerifyOTPRequest {
@@ -58,20 +50,19 @@ message SignInResponse {
   string refresh_token = 2;
 }
 
-message RefreshTokenResponse {
-  string access_token = 1;
-  string refresh_token = 2;
-}
-
-message RefreshTokenRequest {
-  string access_token = 1;
-  string refresh_token = 2;
-}
-
 message SignOutRequest {
-
+  string access_token = 1;
 }
 
 message SignOutResponse {
+  bool success = 1;
+}
 
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
 }

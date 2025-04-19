@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: auth/auth.proto
 
-package ember_auth_v1_authv1
+package authv1
 
 import (
 	context "context"
@@ -19,25 +19,24 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_SendOTP_FullMethodName   = "/auth.Auth/SendOTP"
-	Auth_VerifyOTP_FullMethodName = "/auth.Auth/VerifyOTP"
-	Auth_SignUp_FullMethodName    = "/auth.Auth/SignUp"
-	Auth_SignIn_FullMethodName    = "/auth.Auth/SignIn"
-	Auth_SignOut_FullMethodName   = "/auth.Auth/SignOut"
+	Auth_SendOTP_FullMethodName      = "/auth.Auth/SendOTP"
+	Auth_VerifyOTP_FullMethodName    = "/auth.Auth/VerifyOTP"
+	Auth_SignUp_FullMethodName       = "/auth.Auth/SignUp"
+	Auth_SignIn_FullMethodName       = "/auth.Auth/SignIn"
+	Auth_SignOut_FullMethodName      = "/auth.Auth/SignOut"
+	Auth_RefreshToken_FullMethodName = "/auth.Auth/RefreshToken"
 )
 
 // AuthClient is the client API for Auth service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthClient interface {
-	// SendOTP send email on auth service and return string response
 	SendOTP(ctx context.Context, in *SendOTPRequest, opts ...grpc.CallOption) (*SendOTPResponse, error)
-	// VerifyOTP send otp-code and returns email response
 	VerifyOTP(ctx context.Context, in *VerifyOTPRequest, opts ...grpc.CallOption) (*VerifyOTPResponse, error)
-	// SignUp send username, email, password and returns and access and refresh token
 	SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
 	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
 	SignOut(ctx context.Context, in *SignOutRequest, opts ...grpc.CallOption) (*SignOutResponse, error)
+	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
 }
 
 type authClient struct {
@@ -98,18 +97,26 @@ func (c *authClient) SignOut(ctx context.Context, in *SignOutRequest, opts ...gr
 	return out, nil
 }
 
+func (c *authClient) RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RefreshTokenResponse)
+	err := c.cc.Invoke(ctx, Auth_RefreshToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServer is the server API for Auth service.
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility.
 type AuthServer interface {
-	// SendOTP send email on auth service and return string response
 	SendOTP(context.Context, *SendOTPRequest) (*SendOTPResponse, error)
-	// VerifyOTP send otp-code and returns email response
 	VerifyOTP(context.Context, *VerifyOTPRequest) (*VerifyOTPResponse, error)
-	// SignUp send username, email, password and returns and access and refresh token
 	SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error)
 	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
 	SignOut(context.Context, *SignOutRequest) (*SignOutResponse, error)
+	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -134,6 +141,9 @@ func (UnimplementedAuthServer) SignIn(context.Context, *SignInRequest) (*SignInR
 }
 func (UnimplementedAuthServer) SignOut(context.Context, *SignOutRequest) (*SignOutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignOut not implemented")
+}
+func (UnimplementedAuthServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
 func (UnimplementedAuthServer) testEmbeddedByValue()              {}
@@ -246,6 +256,24 @@ func _Auth_SignOut_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).RefreshToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_RefreshToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).RefreshToken(ctx, req.(*RefreshTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Auth_ServiceDesc is the grpc.ServiceDesc for Auth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -272,6 +300,10 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SignOut",
 			Handler:    _Auth_SignOut_Handler,
+		},
+		{
+			MethodName: "RefreshToken",
+			Handler:    _Auth_RefreshToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
