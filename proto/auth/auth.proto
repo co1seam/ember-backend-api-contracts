@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package auth;
 
-option go_package = "github.com/yourname/project/auth/v1;authv1";
+option go_package = "github.com/co1seam/ember-backend-api-contracts/auth/v1;authv1";
 
 service Auth {
   rpc SendOTP (SendOTPRequest) returns (SendOTPResponse);

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package media;
+
+option go_package = "github.com/co1seam/ember-backend-api-contracts/media/v1;mediav1";
+
+service Media {
+  rpc SendMedia (SendMediaRequest) returns (SendMediaResponse);
+}
+
+message SendMediaRequest {
+  string author = 1;
+  string type = 2;
+  string link = 3;
+  MediaFile content = 4;
+  MediaFile poster = 5;
+  float duration = 6;
+  bool is_active = 7;
+}
+
+message SendMediaResponse {
+  string message = 1;
+}
+
+message MediaFile {
+  bytes content = 1;
+  string filename = 2;
+  string mimetype = 3;
+}
+
+
