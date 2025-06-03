@@ -4,28 +4,63 @@ package media;
 
 option go_package = "github.com/co1seam/ember-backend-api-contracts/media/v1;mediav1";
 
-service Media {
-  rpc SendMedia (SendMediaRequest) returns (SendMediaResponse);
+import "google/protobuf/empty.proto";
+
+service MediaService {
+  rpc CreateMedia(CreateMediaRequest) returns (MediaResponse) {}
+
+  rpc GetMedia(GetMediaRequest) returns (MediaResponse) {}
+
+  rpc UpdateMedia(UpdateMediaRequest) returns (MediaResponse) {}
+
+  rpc DeleteMedia(DeleteMediaRequest) returns (google.protobuf.Empty) {}
+
+  rpc ListMedia(ListMediaRequest) returns (ListMediaResponse) {}
 }
 
-message SendMediaRequest {
-  string author = 1;
-  string type = 2;
-  string link = 3;
-  MediaFile content = 4;
-  MediaFile poster = 5;
-  float duration = 6;
-  bool is_active = 7;
+message Media {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string content_type = 4;
+  string storage_path = 5;
+  string owner_id = 6;
+  string created_at = 7;
+  string url = 8;
 }
 
-message SendMediaResponse {
-  string message = 1;
+message CreateMediaRequest {
+  string title = 1;
+  string description = 2;
+  string content_type = 3;
+  string owner_id = 4;
 }
 
-message MediaFile {
-  bytes content = 1;
-  string filename = 2;
-  string mimetype = 3;
+message MediaResponse {
+  Media media = 1;
+}
+
+message GetMediaRequest {
+  string id = 1;
+}
+
+message UpdateMediaRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+}
+
+message DeleteMediaRequest {
+  string id = 1;
+}
+
+message ListMediaRequest {
+  string owner_id = 1;
+  int32 limit = 2;
+}
+
+message ListMediaResponse {
+  repeated Media media = 1;
 }
 
 
