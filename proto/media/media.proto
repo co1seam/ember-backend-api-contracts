@@ -1,21 +1,25 @@
 syntax = "proto3";
 
-package media;
+package media.v1;
 
-option go_package = "github.com/co1seam/ember-backend-api-contracts/media/v1;mediav1";
+option go_package = "github.com/co1seam/ember-backend-api-contracts/gen/go/media/v1";
 
 import "google/protobuf/empty.proto";
 
 service MediaService {
-  rpc CreateMedia(CreateMediaRequest) returns (MediaResponse) {}
+  rpc CreateMedia(CreateMediaRequest) returns (MediaResponse);
 
-  rpc GetMedia(GetMediaRequest) returns (MediaResponse) {}
+  rpc GetMedia(GetMediaRequest) returns (MediaResponse);
 
-  rpc UpdateMedia(UpdateMediaRequest) returns (MediaResponse) {}
+  rpc UpdateMedia(UpdateMediaRequest) returns (MediaResponse);
 
-  rpc DeleteMedia(DeleteMediaRequest) returns (google.protobuf.Empty) {}
+  rpc DeleteMedia(DeleteMediaRequest) returns (google.protobuf.Empty);
 
-  rpc ListMedia(ListMediaRequest) returns (ListMediaResponse) {}
+  rpc ListMedia(ListMediaRequest) returns (ListMediaResponse);
+
+  rpc UploadFile(stream FileChunk) returns (FileResponse);
+
+  rpc DownloadFile(FileRequest) returns (stream FileChunk);
 }
 
 message Media {
@@ -63,4 +67,18 @@ message ListMediaResponse {
   repeated Media media = 1;
 }
 
+message FileChunk {
+  bytes content = 1;
+  string user_id = 2;
+  string file_id = 3;
+}
+
+message FileRequest {
+  string file_id = 1;
+}
+
+message FileResponse {
+  string file_id = 1;
+  string url = 2;
+}
 

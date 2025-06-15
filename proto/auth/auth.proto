@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package auth;
+package auth.v1;
 
 option go_package = "github.com/co1seam/ember-backend-api-contracts/auth/v1;authv1";
 
@@ -11,6 +11,7 @@ service Auth {
   rpc SignIn (SignInRequest) returns (SignInResponse);
   rpc SignOut (SignOutRequest) returns (SignOutResponse);
   rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
+  rpc ValidateToken (ValidateTokenRequest) returns (ValidateTokenResponse);
 }
 
 message SendOTPRequest {
@@ -65,4 +66,12 @@ message RefreshTokenRequest {
 message RefreshTokenResponse {
   string access_token = 1;
   string refresh_token = 2;
+}
+
+message ValidateTokenRequest {
+  string access_token = 1;
+}
+
+message ValidateTokenResponse {
+  string subject = 1;
 }
