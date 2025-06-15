@@ -481,7 +481,7 @@ func (x *ListMediaResponse) GetMedia() []*Media {
 type FileChunk struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Content       []byte                 `protobuf:"bytes,1,opt,name=content,proto3" json:"content,omitempty"`
-	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	TotalSize     int64                  `protobuf:"varint,2,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`
 	FileId        string                 `protobuf:"bytes,3,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -524,11 +524,11 @@ func (x *FileChunk) GetContent() []byte {
 	return nil
 }
 
-func (x *FileChunk) GetUserId() string {
+func (x *FileChunk) GetTotalSize() int64 {
 	if x != nil {
-		return x.UserId
+		return x.TotalSize
 	}
-	return ""
+	return 0
 }
 
 func (x *FileChunk) GetFileId() string {
@@ -668,10 +668,11 @@ const file_media_media_proto_rawDesc = "" +
 	"\bowner_id\x18\x01 \x01(\tR\aownerId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\":\n" +
 	"\x11ListMediaResponse\x12%\n" +
-	"\x05media\x18\x01 \x03(\v2\x0f.media.v1.MediaR\x05media\"W\n" +
+	"\x05media\x18\x01 \x03(\v2\x0f.media.v1.MediaR\x05media\"]\n" +
 	"\tFileChunk\x12\x18\n" +
-	"\acontent\x18\x01 \x01(\fR\acontent\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x17\n" +
+	"\acontent\x18\x01 \x01(\fR\acontent\x12\x1d\n" +
+	"\n" +
+	"total_size\x18\x02 \x01(\x03R\ttotalSize\x12\x17\n" +
 	"\afile_id\x18\x03 \x01(\tR\x06fileId\"&\n" +
 	"\vFileRequest\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\"9\n" +
