@@ -77,11 +77,11 @@ message FileChunk {
 
 message FileRequest {
   string file_id = 1;
+  string owner_id = 3;
 }
 
 message FileResponse {
   string file_id = 1;
   string url = 2;
-  string owner_id = 3;
 }
 

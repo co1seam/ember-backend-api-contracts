@@ -557,6 +557,7 @@ func (x *FileChunk) GetFileName() string {
 type FileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        string                 `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	OwnerId       string                 `protobuf:"bytes,3,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -598,11 +599,17 @@ func (x *FileRequest) GetFileId() string {
 	return ""
 }
 
+func (x *FileRequest) GetOwnerId() string {
+	if x != nil {
+		return x.OwnerId
+	}
+	return ""
+}
+
 type FileResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        string                 `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
 	Url           string                 `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
-	OwnerId       string                 `protobuf:"bytes,3,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -651,13 +658,6 @@ func (x *FileResponse) GetUrl() string {
 	return ""
 }
 
-func (x *FileResponse) GetOwnerId() string {
-	if x != nil {
-		return x.OwnerId
-	}
-	return ""
-}
-
 var File_media_media_proto protoreflect.FileDescriptor
 
 const file_media_media_proto_rawDesc = "" +
@@ -699,13 +699,13 @@ const file_media_media_proto_rawDesc = "" +
 	"total_size\x18\x02 \x01(\x03R\ttotalSize\x12\x17\n" +
 	"\afile_id\x18\x03 \x01(\tR\x06fileId\x12\x19\n" +
 	"\bis_first\x18\x04 \x01(\bR\aisFirst\x12\x1b\n" +
-	"\tfile_name\x18\x05 \x01(\tR\bfileName\"&\n" +
+	"\tfile_name\x18\x05 \x01(\tR\bfileName\"A\n" +
 	"\vFileRequest\x12\x17\n" +
-	"\afile_id\x18\x01 \x01(\tR\x06fileId\"T\n" +
+	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x19\n" +
+	"\bowner_id\x18\x03 \x01(\tR\aownerId\"9\n" +
 	"\fFileResponse\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url\x12\x19\n" +
-	"\bowner_id\x18\x03 \x01(\tR\aownerId2\xe0\x03\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url2\xe0\x03\n" +
 	"\fMediaService\x12D\n" +
 	"\vCreateMedia\x12\x1c.media.v1.CreateMediaRequest\x1a\x17.media.v1.MediaResponse\x12>\n" +
 	"\bGetMedia\x12\x19.media.v1.GetMediaRequest\x1a\x17.media.v1.MediaResponse\x12D\n" +
