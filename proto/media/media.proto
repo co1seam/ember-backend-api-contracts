@@ -82,5 +82,6 @@ message FileRequest {
 message FileResponse {
   string file_id = 1;
   string url = 2;
+  string owner_id = 3;
 }
 
