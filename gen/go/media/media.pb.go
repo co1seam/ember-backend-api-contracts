@@ -483,6 +483,8 @@ type FileChunk struct {
 	Content       []byte                 `protobuf:"bytes,1,opt,name=content,proto3" json:"content,omitempty"`
 	TotalSize     int64                  `protobuf:"varint,2,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`
 	FileId        string                 `protobuf:"bytes,3,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	IsFirst       bool                   `protobuf:"varint,4,opt,name=is_first,json=isFirst,proto3" json:"is_first,omitempty"`
+	FileName      string                 `protobuf:"bytes,5,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -534,6 +536,20 @@ func (x *FileChunk) GetTotalSize() int64 {
 func (x *FileChunk) GetFileId() string {
 	if x != nil {
 		return x.FileId
+	}
+	return ""
+}
+
+func (x *FileChunk) GetIsFirst() bool {
+	if x != nil {
+		return x.IsFirst
+	}
+	return false
+}
+
+func (x *FileChunk) GetFileName() string {
+	if x != nil {
+		return x.FileName
 	}
 	return ""
 }
@@ -668,12 +684,14 @@ const file_media_media_proto_rawDesc = "" +
 	"\bowner_id\x18\x01 \x01(\tR\aownerId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\":\n" +
 	"\x11ListMediaResponse\x12%\n" +
-	"\x05media\x18\x01 \x03(\v2\x0f.media.v1.MediaR\x05media\"]\n" +
+	"\x05media\x18\x01 \x03(\v2\x0f.media.v1.MediaR\x05media\"\x95\x01\n" +
 	"\tFileChunk\x12\x18\n" +
 	"\acontent\x18\x01 \x01(\fR\acontent\x12\x1d\n" +
 	"\n" +
 	"total_size\x18\x02 \x01(\x03R\ttotalSize\x12\x17\n" +
-	"\afile_id\x18\x03 \x01(\tR\x06fileId\"&\n" +
+	"\afile_id\x18\x03 \x01(\tR\x06fileId\x12\x19\n" +
+	"\bis_first\x18\x04 \x01(\bR\aisFirst\x12\x1b\n" +
+	"\tfile_name\x18\x05 \x01(\tR\bfileName\"&\n" +
 	"\vFileRequest\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\"9\n" +
 	"\fFileResponse\x12\x17\n" +
