@@ -71,6 +71,8 @@ message FileChunk {
   bytes content = 1;
   int64 total_size = 2;
   string file_id = 3;
+  bool is_first = 4;
+  string file_name = 5;
 }
 
 message FileRequest {
