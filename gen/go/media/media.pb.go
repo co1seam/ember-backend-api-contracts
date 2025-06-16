@@ -606,6 +606,74 @@ func (x *FileRequest) GetOwnerId() string {
 	return ""
 }
 
+type DownloadRangeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        string                 `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	OwnerId       string                 `protobuf:"bytes,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	Start         int64                  `protobuf:"varint,3,opt,name=start,proto3" json:"start,omitempty"`
+	End           int64                  `protobuf:"varint,4,opt,name=end,proto3" json:"end,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DownloadRangeRequest) Reset() {
+	*x = DownloadRangeRequest{}
+	mi := &file_media_media_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DownloadRangeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DownloadRangeRequest) ProtoMessage() {}
+
+func (x *DownloadRangeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_media_media_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DownloadRangeRequest.ProtoReflect.Descriptor instead.
+func (*DownloadRangeRequest) Descriptor() ([]byte, []int) {
+	return file_media_media_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *DownloadRangeRequest) GetFileId() string {
+	if x != nil {
+		return x.FileId
+	}
+	return ""
+}
+
+func (x *DownloadRangeRequest) GetOwnerId() string {
+	if x != nil {
+		return x.OwnerId
+	}
+	return ""
+}
+
+func (x *DownloadRangeRequest) GetStart() int64 {
+	if x != nil {
+		return x.Start
+	}
+	return 0
+}
+
+func (x *DownloadRangeRequest) GetEnd() int64 {
+	if x != nil {
+		return x.End
+	}
+	return 0
+}
+
 type FileResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        string                 `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
@@ -616,7 +684,7 @@ type FileResponse struct {
 
 func (x *FileResponse) Reset() {
 	*x = FileResponse{}
-	mi := &file_media_media_proto_msgTypes[10]
+	mi := &file_media_media_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -628,7 +696,7 @@ func (x *FileResponse) String() string {
 func (*FileResponse) ProtoMessage() {}
 
 func (x *FileResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_media_media_proto_msgTypes[10]
+	mi := &file_media_media_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -641,7 +709,7 @@ func (x *FileResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FileResponse.ProtoReflect.Descriptor instead.
 func (*FileResponse) Descriptor() ([]byte, []int) {
-	return file_media_media_proto_rawDescGZIP(), []int{10}
+	return file_media_media_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *FileResponse) GetFileId() string {
@@ -702,7 +770,12 @@ const file_media_media_proto_rawDesc = "" +
 	"\tfile_name\x18\x05 \x01(\tR\bfileName\"A\n" +
 	"\vFileRequest\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x19\n" +
-	"\bowner_id\x18\x03 \x01(\tR\aownerId\"9\n" +
+	"\bowner_id\x18\x03 \x01(\tR\aownerId\"r\n" +
+	"\x14DownloadRangeRequest\x12\x17\n" +
+	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x19\n" +
+	"\bowner_id\x18\x02 \x01(\tR\aownerId\x12\x14\n" +
+	"\x05start\x18\x03 \x01(\x03R\x05start\x12\x10\n" +
+	"\x03end\x18\x04 \x01(\x03R\x03end\"9\n" +
 	"\fFileResponse\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x10\n" +
 	"\x03url\x18\x02 \x01(\tR\x03url2\xe0\x03\n" +
@@ -728,20 +801,21 @@ func file_media_media_proto_rawDescGZIP() []byte {
 	return file_media_media_proto_rawDescData
 }
 
-var file_media_media_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_media_media_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_media_media_proto_goTypes = []any{
-	(*Media)(nil),              // 0: media.v1.Media
-	(*CreateMediaRequest)(nil), // 1: media.v1.CreateMediaRequest
-	(*MediaResponse)(nil),      // 2: media.v1.MediaResponse
-	(*GetMediaRequest)(nil),    // 3: media.v1.GetMediaRequest
-	(*UpdateMediaRequest)(nil), // 4: media.v1.UpdateMediaRequest
-	(*DeleteMediaRequest)(nil), // 5: media.v1.DeleteMediaRequest
-	(*ListMediaRequest)(nil),   // 6: media.v1.ListMediaRequest
-	(*ListMediaResponse)(nil),  // 7: media.v1.ListMediaResponse
-	(*FileChunk)(nil),          // 8: media.v1.FileChunk
-	(*FileRequest)(nil),        // 9: media.v1.FileRequest
-	(*FileResponse)(nil),       // 10: media.v1.FileResponse
-	(*emptypb.Empty)(nil),      // 11: google.protobuf.Empty
+	(*Media)(nil),                // 0: media.v1.Media
+	(*CreateMediaRequest)(nil),   // 1: media.v1.CreateMediaRequest
+	(*MediaResponse)(nil),        // 2: media.v1.MediaResponse
+	(*GetMediaRequest)(nil),      // 3: media.v1.GetMediaRequest
+	(*UpdateMediaRequest)(nil),   // 4: media.v1.UpdateMediaRequest
+	(*DeleteMediaRequest)(nil),   // 5: media.v1.DeleteMediaRequest
+	(*ListMediaRequest)(nil),     // 6: media.v1.ListMediaRequest
+	(*ListMediaResponse)(nil),    // 7: media.v1.ListMediaResponse
+	(*FileChunk)(nil),            // 8: media.v1.FileChunk
+	(*FileRequest)(nil),          // 9: media.v1.FileRequest
+	(*DownloadRangeRequest)(nil), // 10: media.v1.DownloadRangeRequest
+	(*FileResponse)(nil),         // 11: media.v1.FileResponse
+	(*emptypb.Empty)(nil),        // 12: google.protobuf.Empty
 }
 var file_media_media_proto_depIdxs = []int32{
 	0,  // 0: media.v1.MediaResponse.media:type_name -> media.v1.Media
@@ -756,9 +830,9 @@ var file_media_media_proto_depIdxs = []int32{
 	2,  // 9: media.v1.MediaService.CreateMedia:output_type -> media.v1.MediaResponse
 	2,  // 10: media.v1.MediaService.GetMedia:output_type -> media.v1.MediaResponse
 	2,  // 11: media.v1.MediaService.UpdateMedia:output_type -> media.v1.MediaResponse
-	11, // 12: media.v1.MediaService.DeleteMedia:output_type -> google.protobuf.Empty
+	12, // 12: media.v1.MediaService.DeleteMedia:output_type -> google.protobuf.Empty
 	7,  // 13: media.v1.MediaService.ListMedia:output_type -> media.v1.ListMediaResponse
-	10, // 14: media.v1.MediaService.UploadFile:output_type -> media.v1.FileResponse
+	11, // 14: media.v1.MediaService.UploadFile:output_type -> media.v1.FileResponse
 	8,  // 15: media.v1.MediaService.DownloadFile:output_type -> media.v1.FileChunk
 	9,  // [9:16] is the sub-list for method output_type
 	2,  // [2:9] is the sub-list for method input_type
@@ -778,7 +852,7 @@ func file_media_media_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_media_media_proto_rawDesc), len(file_media_media_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -80,6 +80,13 @@ message FileRequest {
   string owner_id = 3;
 }
 
+message DownloadRangeRequest {
+  string file_id = 1;
+  string owner_id = 2;
+  int64 start = 3;
+  int64 end = 4;
+}
+
 message FileResponse {
   string file_id = 1;
   string url = 2;
