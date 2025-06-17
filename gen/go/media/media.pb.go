@@ -557,7 +557,7 @@ func (x *FileChunk) GetFileName() string {
 type FileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        string                 `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
-	OwnerId       string                 `protobuf:"bytes,3,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	OwnerId       string                 `protobuf:"bytes,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -606,50 +606,6 @@ func (x *FileRequest) GetOwnerId() string {
 	return ""
 }
 
-type DownloadRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DownloadRequest) Reset() {
-	*x = DownloadRequest{}
-	mi := &file_media_media_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DownloadRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DownloadRequest) ProtoMessage() {}
-
-func (x *DownloadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_media_media_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DownloadRequest.ProtoReflect.Descriptor instead.
-func (*DownloadRequest) Descriptor() ([]byte, []int) {
-	return file_media_media_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *DownloadRequest) GetUrl() string {
-	if x != nil {
-		return x.Url
-	}
-	return ""
-}
-
 type FileResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        string                 `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
@@ -660,7 +616,7 @@ type FileResponse struct {
 
 func (x *FileResponse) Reset() {
 	*x = FileResponse{}
-	mi := &file_media_media_proto_msgTypes[11]
+	mi := &file_media_media_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -672,7 +628,7 @@ func (x *FileResponse) String() string {
 func (*FileResponse) ProtoMessage() {}
 
 func (x *FileResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_media_media_proto_msgTypes[11]
+	mi := &file_media_media_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -685,7 +641,7 @@ func (x *FileResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FileResponse.ProtoReflect.Descriptor instead.
 func (*FileResponse) Descriptor() ([]byte, []int) {
-	return file_media_media_proto_rawDescGZIP(), []int{11}
+	return file_media_media_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *FileResponse) GetFileId() string {
@@ -698,6 +654,58 @@ func (x *FileResponse) GetFileId() string {
 func (x *FileResponse) GetUrl() string {
 	if x != nil {
 		return x.Url
+	}
+	return ""
+}
+
+type DownloadResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Chunk         []byte                 `protobuf:"bytes,1,opt,name=chunk,proto3" json:"chunk,omitempty"`
+	Lala          string                 `protobuf:"bytes,2,opt,name=lala,proto3" json:"lala,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DownloadResponse) Reset() {
+	*x = DownloadResponse{}
+	mi := &file_media_media_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DownloadResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DownloadResponse) ProtoMessage() {}
+
+func (x *DownloadResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_media_media_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DownloadResponse.ProtoReflect.Descriptor instead.
+func (*DownloadResponse) Descriptor() ([]byte, []int) {
+	return file_media_media_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *DownloadResponse) GetChunk() []byte {
+	if x != nil {
+		return x.Chunk
+	}
+	return nil
+}
+
+func (x *DownloadResponse) GetLala() string {
+	if x != nil {
+		return x.Lala
 	}
 	return ""
 }
@@ -746,12 +754,13 @@ const file_media_media_proto_rawDesc = "" +
 	"\tfile_name\x18\x05 \x01(\tR\bfileName\"A\n" +
 	"\vFileRequest\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x19\n" +
-	"\bowner_id\x18\x03 \x01(\tR\aownerId\"#\n" +
-	"\x0fDownloadRequest\x12\x10\n" +
-	"\x03url\x18\x01 \x01(\tR\x03url\"9\n" +
+	"\bowner_id\x18\x02 \x01(\tR\aownerId\"9\n" +
 	"\fFileResponse\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url2\xe4\x03\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url\"<\n" +
+	"\x10DownloadResponse\x12\x14\n" +
+	"\x05chunk\x18\x01 \x01(\fR\x05chunk\x12\x12\n" +
+	"\x04lala\x18\x02 \x01(\tR\x04lala2\xe7\x03\n" +
 	"\fMediaService\x12D\n" +
 	"\vCreateMedia\x12\x1c.media.v1.CreateMediaRequest\x1a\x17.media.v1.MediaResponse\x12>\n" +
 	"\bGetMedia\x12\x19.media.v1.GetMediaRequest\x1a\x17.media.v1.MediaResponse\x12D\n" +
@@ -759,8 +768,8 @@ const file_media_media_proto_rawDesc = "" +
 	"\vDeleteMedia\x12\x1c.media.v1.DeleteMediaRequest\x1a\x16.google.protobuf.Empty\x12D\n" +
 	"\tListMedia\x12\x1a.media.v1.ListMediaRequest\x1a\x1b.media.v1.ListMediaResponse\x12;\n" +
 	"\n" +
-	"UploadFile\x12\x13.media.v1.FileChunk\x1a\x16.media.v1.FileResponse(\x01\x12@\n" +
-	"\fDownloadFile\x12\x15.media.v1.FileRequest\x1a\x19.media.v1.DownloadRequestB@Z>github.com/co1seam/ember-backend-api-contracts/gen/go/media/v1b\x06proto3"
+	"UploadFile\x12\x13.media.v1.FileChunk\x1a\x16.media.v1.FileResponse(\x01\x12C\n" +
+	"\fDownloadFile\x12\x15.media.v1.FileRequest\x1a\x1a.media.v1.DownloadResponse0\x01B@Z>github.com/co1seam/ember-backend-api-contracts/gen/go/media/v1b\x06proto3"
 
 var (
 	file_media_media_proto_rawDescOnce sync.Once
@@ -786,8 +795,8 @@ var file_media_media_proto_goTypes = []any{
 	(*ListMediaResponse)(nil),  // 7: media.v1.ListMediaResponse
 	(*FileChunk)(nil),          // 8: media.v1.FileChunk
 	(*FileRequest)(nil),        // 9: media.v1.FileRequest
-	(*DownloadRequest)(nil),    // 10: media.v1.DownloadRequest
-	(*FileResponse)(nil),       // 11: media.v1.FileResponse
+	(*FileResponse)(nil),       // 10: media.v1.FileResponse
+	(*DownloadResponse)(nil),   // 11: media.v1.DownloadResponse
 	(*emptypb.Empty)(nil),      // 12: google.protobuf.Empty
 }
 var file_media_media_proto_depIdxs = []int32{
@@ -805,8 +814,8 @@ var file_media_media_proto_depIdxs = []int32{
 	2,  // 11: media.v1.MediaService.UpdateMedia:output_type -> media.v1.MediaResponse
 	12, // 12: media.v1.MediaService.DeleteMedia:output_type -> google.protobuf.Empty
 	7,  // 13: media.v1.MediaService.ListMedia:output_type -> media.v1.ListMediaResponse
-	11, // 14: media.v1.MediaService.UploadFile:output_type -> media.v1.FileResponse
-	10, // 15: media.v1.MediaService.DownloadFile:output_type -> media.v1.DownloadRequest
+	10, // 14: media.v1.MediaService.UploadFile:output_type -> media.v1.FileResponse
+	11, // 15: media.v1.MediaService.DownloadFile:output_type -> media.v1.DownloadResponse
 	9,  // [9:16] is the sub-list for method output_type
 	2,  // [2:9] is the sub-list for method input_type
 	2,  // [2:2] is the sub-list for extension type_name

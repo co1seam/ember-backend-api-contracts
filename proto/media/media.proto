@@ -19,7 +19,7 @@ service MediaService {
 
   rpc UploadFile(stream FileChunk) returns (FileResponse);
 
-  rpc DownloadFile(FileRequest) returns (DownloadRequest);
+  rpc DownloadFile(FileRequest) returns (stream DownloadResponse);
 }
 
 message Media {
@@ -77,15 +77,16 @@ message FileChunk {
 
 message FileRequest {
   string file_id = 1;
-  string owner_id = 3;
-}
-
-message DownloadRequest {
-  string url = 1;
+  string owner_id = 2;
 }
 
 message FileResponse {
   string file_id = 1;
   string url = 2;
+}
+
+message DownloadResponse {
+  bytes chunk = 1;
+  string lala = 2;
 }
 

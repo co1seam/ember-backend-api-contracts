@@ -39,7 +39,7 @@ type MediaServiceClient interface {
 	DeleteMedia(ctx context.Context, in *DeleteMediaRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListMedia(ctx context.Context, in *ListMediaRequest, opts ...grpc.CallOption) (*ListMediaResponse, error)
 	UploadFile(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[FileChunk, FileResponse], error)
-	DownloadFile(ctx context.Context, in *FileRequest, opts ...grpc.CallOption) (*DownloadRequest, error)
+	DownloadFile(ctx context.Context, in *FileRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[DownloadResponse], error)
 }
 
 type mediaServiceClient struct {
@@ -113,15 +113,24 @@ func (c *mediaServiceClient) UploadFile(ctx context.Context, opts ...grpc.CallOp
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type MediaService_UploadFileClient = grpc.ClientStreamingClient[FileChunk, FileResponse]
 
-func (c *mediaServiceClient) DownloadFile(ctx context.Context, in *FileRequest, opts ...grpc.CallOption) (*DownloadRequest, error) {
+func (c *mediaServiceClient) DownloadFile(ctx context.Context, in *FileRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[DownloadResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DownloadRequest)
-	err := c.cc.Invoke(ctx, MediaService_DownloadFile_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &MediaService_ServiceDesc.Streams[1], MediaService_DownloadFile_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &grpc.GenericClientStream[FileRequest, DownloadResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type MediaService_DownloadFileClient = grpc.ServerStreamingClient[DownloadResponse]
 
 // MediaServiceServer is the server API for MediaService service.
 // All implementations must embed UnimplementedMediaServiceServer
@@ -133,7 +142,7 @@ type MediaServiceServer interface {
 	DeleteMedia(context.Context, *DeleteMediaRequest) (*emptypb.Empty, error)
 	ListMedia(context.Context, *ListMediaRequest) (*ListMediaResponse, error)
 	UploadFile(grpc.ClientStreamingServer[FileChunk, FileResponse]) error
-	DownloadFile(context.Context, *FileRequest) (*DownloadRequest, error)
+	DownloadFile(*FileRequest, grpc.ServerStreamingServer[DownloadResponse]) error
 	mustEmbedUnimplementedMediaServiceServer()
 }
 
@@ -162,8 +171,8 @@ func (UnimplementedMediaServiceServer) ListMedia(context.Context, *ListMediaRequ
 func (UnimplementedMediaServiceServer) UploadFile(grpc.ClientStreamingServer[FileChunk, FileResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method UploadFile not implemented")
 }
-func (UnimplementedMediaServiceServer) DownloadFile(context.Context, *FileRequest) (*DownloadRequest, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DownloadFile not implemented")
+func (UnimplementedMediaServiceServer) DownloadFile(*FileRequest, grpc.ServerStreamingServer[DownloadResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method DownloadFile not implemented")
 }
 func (UnimplementedMediaServiceServer) mustEmbedUnimplementedMediaServiceServer() {}
 func (UnimplementedMediaServiceServer) testEmbeddedByValue()                      {}
@@ -283,23 +292,16 @@ func _MediaService_UploadFile_Handler(srv interface{}, stream grpc.ServerStream)
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type MediaService_UploadFileServer = grpc.ClientStreamingServer[FileChunk, FileResponse]
 
-func _MediaService_DownloadFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FileRequest)
-	if err := dec(in); err != nil {
-		return nil, err
+func _MediaService_DownloadFile_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(FileRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(MediaServiceServer).DownloadFile(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: MediaService_DownloadFile_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MediaServiceServer).DownloadFile(ctx, req.(*FileRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(MediaServiceServer).DownloadFile(m, &grpc.GenericServerStream[FileRequest, DownloadResponse]{ServerStream: stream})
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type MediaService_DownloadFileServer = grpc.ServerStreamingServer[DownloadResponse]
 
 // MediaService_ServiceDesc is the grpc.ServiceDesc for MediaService service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -328,16 +330,17 @@ var MediaService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "ListMedia",
 			Handler:    _MediaService_ListMedia_Handler,
 		},
-		{
-			MethodName: "DownloadFile",
-			Handler:    _MediaService_DownloadFile_Handler,
-		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "UploadFile",
 			Handler:       _MediaService_UploadFile_Handler,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "DownloadFile",
+			Handler:       _MediaService_DownloadFile_Handler,
+			ServerStreams: true,
 		},
 	},
 	Metadata: "media/media.proto",
