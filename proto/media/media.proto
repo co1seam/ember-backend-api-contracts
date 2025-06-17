@@ -31,6 +31,7 @@ message Media {
   string owner_id = 6;
   string created_at = 7;
   string url = 8;
+  int64 size = 9;
 }
 
 message CreateMediaRequest {
@@ -78,6 +79,8 @@ message FileChunk {
 message FileRequest {
   string file_id = 1;
   string owner_id = 2;
+  int64 start = 3;
+  int64 end = 4;
 }
 
 message FileResponse {

@@ -32,6 +32,7 @@ type Media struct {
 	OwnerId       string                 `protobuf:"bytes,6,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	CreatedAt     string                 `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	Url           string                 `protobuf:"bytes,8,opt,name=url,proto3" json:"url,omitempty"`
+	Size          int64                  `protobuf:"varint,9,opt,name=size,proto3" json:"size,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -120,6 +121,13 @@ func (x *Media) GetUrl() string {
 		return x.Url
 	}
 	return ""
+}
+
+func (x *Media) GetSize() int64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
 }
 
 type CreateMediaRequest struct {
@@ -558,6 +566,8 @@ type FileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        string                 `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
 	OwnerId       string                 `protobuf:"bytes,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	Start         int64                  `protobuf:"varint,3,opt,name=start,proto3" json:"start,omitempty"`
+	End           int64                  `protobuf:"varint,4,opt,name=end,proto3" json:"end,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -604,6 +614,20 @@ func (x *FileRequest) GetOwnerId() string {
 		return x.OwnerId
 	}
 	return ""
+}
+
+func (x *FileRequest) GetStart() int64 {
+	if x != nil {
+		return x.Start
+	}
+	return 0
+}
+
+func (x *FileRequest) GetEnd() int64 {
+	if x != nil {
+		return x.End
+	}
+	return 0
 }
 
 type FileResponse struct {
@@ -714,7 +738,7 @@ var File_media_media_proto protoreflect.FileDescriptor
 
 const file_media_media_proto_rawDesc = "" +
 	"\n" +
-	"\x11media/media.proto\x12\bmedia.v1\x1a\x1bgoogle/protobuf/empty.proto\"\xe1\x01\n" +
+	"\x11media/media.proto\x12\bmedia.v1\x1a\x1bgoogle/protobuf/empty.proto\"\xf5\x01\n" +
 	"\x05Media\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
@@ -724,7 +748,8 @@ const file_media_media_proto_rawDesc = "" +
 	"\bowner_id\x18\x06 \x01(\tR\aownerId\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\a \x01(\tR\tcreatedAt\x12\x10\n" +
-	"\x03url\x18\b \x01(\tR\x03url\"\x8a\x01\n" +
+	"\x03url\x18\b \x01(\tR\x03url\x12\x12\n" +
+	"\x04size\x18\t \x01(\x03R\x04size\"\x8a\x01\n" +
 	"\x12CreateMediaRequest\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12!\n" +
@@ -751,10 +776,12 @@ const file_media_media_proto_rawDesc = "" +
 	"total_size\x18\x02 \x01(\x03R\ttotalSize\x12\x17\n" +
 	"\afile_id\x18\x03 \x01(\tR\x06fileId\x12\x19\n" +
 	"\bis_first\x18\x04 \x01(\bR\aisFirst\x12\x1b\n" +
-	"\tfile_name\x18\x05 \x01(\tR\bfileName\"A\n" +
+	"\tfile_name\x18\x05 \x01(\tR\bfileName\"i\n" +
 	"\vFileRequest\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x19\n" +
-	"\bowner_id\x18\x02 \x01(\tR\aownerId\"9\n" +
+	"\bowner_id\x18\x02 \x01(\tR\aownerId\x12\x14\n" +
+	"\x05start\x18\x03 \x01(\x03R\x05start\x12\x10\n" +
+	"\x03end\x18\x04 \x01(\x03R\x03end\"9\n" +
 	"\fFileResponse\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x10\n" +
 	"\x03url\x18\x02 \x01(\tR\x03url\"<\n" +
